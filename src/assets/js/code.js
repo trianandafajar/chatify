@@ -1,3 +1,225 @@
+/**
+ *-------------------------------------------------------------
+ * Global variables
+ *-------------------------------------------------------------
+ */
+var messenger,
+  typingTimeout,
+  typingNow = 0,
+  temporaryMsgId = 0,
+  defaultAvatarInSettings = null,
+  messengerColor,
+  dark_mode;
+const messagesContainer = $(".messenger-messagingView .m-body"),
+  messengerTitleDefault = $(".messenger-headTitle").text(),
+  messageInput = $("#message-form .m-send"),
+  auth_id = $("meta[name=url]").attr("data-user"),
+  route = $("meta[name=route]").attr("content"),
+  url = $("meta[name=url]").attr("content"),
+  access_token = $('meta[name="csrf-token"]').attr("content");
+// console.log(auth_id);
+
+const escapeHtml = (unsafe) => {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+};
+/**
+ *-------------------------------------------------------------
+ * Global Templates
+ *-------------------------------------------------------------
+ */
+// Loading svg
+function loadingSVG(w_h = "25px", className = null, style = null) {
+  return `
+ <svg style="${style}" class="loadingSVG ${className}" xmlns="http://www.w3.org/2000/svg" width="${w_h}" height="${w_h}" viewBox="0 0 40 40" stroke="#2196f3">
+   <g fill="none" fill-rule="evenodd">
+     <g transform="translate(2 2)" stroke-width="3">
+       <circle stroke-opacity=".1" cx="18" cy="18" r="18"></circle>
+       <path d="M36 18c0-9.94-8.06-18-18-18" transform="rotate(349.311 18 18)">
+           <animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur=".8s" repeatCount="indefinite"></animateTransform>
+       </path>
+     </g>
+   </g>
+ </svg>
+ `;
+}
+
+// loading placeholder for users list item
+function listItemLoading(items) {
+  let template = "";
+  for (let i = 0; i < items; i++) {
+    template += `
+     <div class="loadingPlaceholder">
+       <div class="loadingPlaceholder-wrapper">
+         <div class="loadingPlaceholder-body">
+         <table class="loadingPlaceholder-header">
+           <tr>
+             <td style="width: 45px;"><div class="loadingPlaceholder-avatar"></div></td>
+             <td>
+               <div class="loadingPlaceholder-name"></div>
+                   <div class="loadingPlaceholder-date"></div>
+             </td>
+           </tr>
+         </table>
+         </div>
+       </div>
+   </div>
+     `;
+  }
+  return template;
+}
+
+// loading placeholder for avatars
+function avatarLoading(items) {
+  let template = "";
+  for (let i = 0; i < items; i++) {
+    template += `
+     <div class="loadingPlaceholder">
+     <div class="loadingPlaceholder-wrapper">
+         <div class="loadingPlaceholder-body">
+             <table class="loadingPlaceholder-header">
+                 <tr>
+                     <td style="width: 45px;">
+                         <div class="loadingPlaceholder-avatar" style="margin: 2px;"></div>
+                     </td>
+                 </tr>
+             </table>
+         </div>
+     </div>
+     </div>
+     `;
+  }
+  return template;
+}
+
+// While sending a message, show this temporary message card.
+function sendigCard(message, id) {
+  return (
+    `
+ <div class="message-card mc-sender" data-id="` +
+    id +
+    `">
+     <p>` +
+    message +
+    `<sub><span class="far fa-clock"></span></sub></p>
+ </div>
+ `
+  );
+}
+// upload image preview card.
+function attachmentTemplate(fileType, fileName, imgURL = null) {
+  if (fileType != "image") {
+    return (
+      `
+     <div class="attachment-preview">
+         <span class="fas fa-times cancel"></span>
+         <p style="padding:0px 30px;"><span class="fas fa-file"></span> ` +
+      escapeHtml(fileName) +
+      `</p>
+     </div>
+     `
+    );
+  } else {
+    return (
+      `
+     <div class="attachment-preview">
+         <span class="fas fa-times cancel"></span>
+         <div class="image-file chat-image" style="background-image: url('` +
+      imgURL +
+      `');"></div>
+         <p><span class="fas fa-file-image"></span> ` +
+      escapeHtml(fileName) +
+      `</p>
+     </div>
+     `
+    );
+  }
+}
+
+// Active Status Circle
+function activeStatusCircle() {
+  return `<span class="activeStatus"></span>`;
+}
+
+/**
+ *-------------------------------------------------------------
+ * Css Media Queries [For responsive design]
+ *-------------------------------------------------------------
+ */
+$(window).resize(function() {
+  cssMediaQueries();
+});
+function cssMediaQueries() {
+  if (window.matchMedia("(min-width: 980px)").matches) {
+    $(".messenger-listView").removeAttr("style");
+  }
+  if (window.matchMedia("(max-width: 980px)").matches) {
+    $("body")
+      .find(".messenger-list-item")
+      .find("tr[data-action]")
+      .attr("data-action", "1");
+    $("body")
+      .find(".favorite-list-item")
+      .find("div")
+      .attr("data-action", "1");
+  } else {
+    $("body")
+      .find(".messenger-list-item")
+      .find("tr[data-action]")
+      .attr("data-action", "0");
+    $("body")
+      .find(".favorite-list-item")
+      .find("div")
+      .attr("data-action", "0");
+  }
+}
+
+/**
+ *-------------------------------------------------------------
+ * App Modal
+ *-------------------------------------------------------------
+ */
+let app_modal = function({
+  show = true,
+  name,
+  data = 0,
+  buttons = true,
+  header = null,
+  body = null,
+}) {
+  const modal = $(".app-modal[data-name=" + name + "]");
+  // header
+  header ? modal.find(".app-modal-header").html(header) : "";
+
+  // body
+  body ? modal.find(".app-modal-body").html(body) : "";
+
+  // buttons
+  buttons == true
+    ? modal.find(".app-modal-footer").show()
+    : modal.find(".app-modal-footer").hide();
+
+  // show / hide
+  if (show == true) {
+    modal.show();
+    $(".app-modal-card[data-name=" + name + "]").addClass("app-show-modal");
+    $(".app-modal-card[data-name=" + name + "]").attr("data-modal", data);
+  } else {
+    modal.hide();
+    $(".app-modal-card[data-name=" + name + "]").removeClass("app-show-modal");
+    $(".app-modal-card[data-name=" + name + "]").attr("data-modal", data);
+  }
+};
+
+/**
+ *-------------------------------------------------------------
+ * Slide to bottom on [action] - e.g. [message received, sent, loaded]
+ *-------------------------------------------------------------
+ */
+function scrollBottom(container) {
+  $(container)
     .stop()
     .animate({
       scrollTop: $(container)[0].scrollHeight,
