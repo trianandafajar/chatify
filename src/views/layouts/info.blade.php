@@ -1,3 +1,8 @@
+{{-- -------------------- User Info and Avatar -------------------- --}}
+<div class="messenger-infoView">
+    {{-- Avatar dan Nama --}}
+    <div class="messenger-infoView-header">
+        <div class="avatar av-l" style="background-image: url('{{ asset('/storage/' . config('chatify.user_avatar.folder') . '/' . $user->avatar) }}');"></div>
         <p class="info-name">{{ config('chatify.name') }}</p>
     </div>
 
