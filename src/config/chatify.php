@@ -1,3 +1,12 @@
+<?php
+
+return [
+
+    /*
+    |-------------------------------------
+    | Messenger display name
+    |-------------------------------------
+    */
     'name' => env('CHATIFY_NAME', 'Chatify Messenger'),
 
     /*
