@@ -1,3 +1,27 @@
+<?php
+
+namespace Chatify\Console;
+
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
+
+class InstallCommand extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'chatify:install';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Install Chatify package';
+
     /**
      * Check Laravel version.
      *
