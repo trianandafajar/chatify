@@ -7,6 +7,6 @@
 </div>
 {{-- shared photos --}}
 <div class="messenger-infoView-shared">
-    <p class="messenger-title">shared photos</p>
+    <p class="messenger-title">Share photos</p>
     <div class="shared-photos-list"></div>
 </div>
