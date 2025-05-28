@@ -6,59 +6,61 @@
 
 # Chatify Laravel Package
 
-A Laravel package helps you add a complete real-time messaging system to your new / existing application with only one command.
+A Laravel package that helps you add a complete real-time messaging system to your new or existing application with only one command.
 
 # Announcement 📣
 
-I have created a server for **Chatify** on `Discord` to let you **up-to-date** and help you as much as I can .. so now you can chat with me, get a help, showcases, and most importantly to get announcements and updates about **Chatify**.
-I'll announce a **big news** soon 🤩🤩 .. So, [join now](https://discord.gg/RaxyKVykYJ) and keep updated.
+Chatify is now maintained by **Triananda Fajar**.  
+Feel free to reach out for updates, help, contributions, or feedback.
+
+📧 Email: [mail.trianandafajar@gmail.com](mailto:mail.trianandafajar@gmail.com)  
+💻 GitHub: [https://github.com/trianandafajar](https://github.com/trianandafajar)
 
 # Features
 
- <img src="https://1.bp.blogspot.com/-KSPiLL3tq_o/XgpLmCgWAuI/AAAAAAAAA6w/n6m4k2MC1joNMgKS6Vpki2-3z92HXUvQwCLcBGAsYHQ/s1600/Screenshot%2Bfrom%2B2019-12-30%2B21-59-55.png" style="width:50%;" />
+<img src="https://1.bp.blogspot.com/-KSPiLL3tq_o/XgpLmCgWAuI/AAAAAAAAA6w/n6m4k2MC1joNMgKS6Vpki2-3z92HXUvQwCLcBGAsYHQ/s1600/Screenshot%2Bfrom%2B2019-12-30%2B21-59-55.png" style="width:50%;" />
 
-- Users / groups(soon) chat system.
+- Users / groups (soon) chat system.
 - Real-time contacts list updates.
-- Favorites contacts list (Like stories style) and add to favorite button.
-- Saved Messages to save your messages online like Telegram messenger app.
+- Favorites contacts list (like stories-style) and "add to favorite" button.
+- Saved Messages – similar to Telegram’s saved messages.
 - Search functionality.
-- Contact item's last message indicator (e.g. You: ....).
-- Real-time user's active status.
+- Last message indicator on contact item (e.g. You: ...).
+- Real-time active status.
 - Real-time typing indicator.
-- Real-time seen messages indicator.
+- Real-time seen indicator.
 - Real-time internet connection status.
-- Upload attachments (Photo/File).
-- Shared photos, delete conversation.. (User's info right side).
-- Responsive design with all devices.
-- User settings and chat customization : user's profile photo, dark mode and chat color.
-  with simple and wonderful UI design.
+- Upload attachments (photo/file).
+- Shared photos, delete conversation, and more in user's info pane.
+- Fully responsive design for all devices.
+- User settings & customization: profile photo, dark mode, chat color.
+- Beautiful and simple UI design.
 
 # Demo
 
-- [Live Demo](https://chatify-demo.munafio.com/)
+- 🔴 [Live Demo](https://chatify-demo.munafio.com/)
 
-Register a new user or login using the credentials below :
+You can try the demo using these credentials:
 
-```
-email    : demo@e.com
-password : demo1234
-```
+- 📦 Demo repo: [Chatify Demo](https://github.com/munafio/chatify-demo)
+- ▶️ Demo video: [YouTube](https://youtu.be/gjo74FUJJPI)
 
-- Demo app - [Click Here](https://github.com/munafio/chatify-demo).
-- Video on YouTube - [Click Here](https://youtu.be/gjo74FUJJPI)
+# Documentation
 
-# Official Documentation
+Official documentation for Chatify can be found [here](https://chatify.munafio.com)
 
-Documentation for Chatify can be found [here](https://chatify.munafio.com)
+# Change Log
 
-# Change log
+See the [CHANGELOG.md](https://github.com/munafio/chatify/blob/master/CHANGELOG.md) file for version history.
 
-[CHANGELOG.md](https://github.com/munafio/chatify/blob/master/CHANGELOG.md)
+# Author
 
-# Authors
+Created & Maintained by:
 
-- [Munaf A. Mahdi](https://www.munafio.com/p/about-me.html)
+**Triananda Fajar**  
+📧 Email: [mail.trianandafajar@gmail.com](mailto:mail.trianandafajar@gmail.com)  
+💻 GitHub: [https://github.com/trianandafajar](https://github.com/trianandafajar)
 
 # License
 
-Chatify is licensed under the [MIT license](https://choosealicense.com/licenses/mit/)
+Chatify is open-sourced software licensed under the [MIT license](https://choosealicense.com/licenses/mit/)
