@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 
 class MessagesController extends Controller
 {
-    public function pusherAuth(Request $request)
+    public function pusherAuth(Request $request): Response|string
     {
         $authData = json_encode([
             'user_id' => Auth::user()->id,
@@ -33,7 +33,7 @@ class MessagesController extends Controller
         return new Response('Unauthorized', 401);
     }
 
-    public function index($id = null)
+    public function index($id = null): \Illuminate\View\View
     {
         $routeName = FacadesRequest::route()->getName();
         $route = in_array($routeName, ['user', config('chatify.routes.prefix')]) ? 'user' : $routeName;
@@ -46,7 +46,7 @@ class MessagesController extends Controller
         ]);
     }
 
-    public function idFetchData(Request $request)
+    public function idFetchData(Request $request): \Illuminate\Http\JsonResponse
     {
         $favorite = Chatify::inFavorite($request['id']);
         $fetch = $request['type'] == 'user' ? User::where('id', $request['id'])->first() : null;
@@ -58,7 +58,7 @@ class MessagesController extends Controller
         ]);
     }
 
-    public function download($fileName)
+    public function download($fileName): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         $path = storage_path() . '/app/public/' . config('chatify.attachments.folder') . '/' . $fileName;
         if (file_exists($path)) {
@@ -67,7 +67,7 @@ class MessagesController extends Controller
         return abort(404, "Sorry, File does not exist in our server or may have been deleted!");
     }
 
-    public function send(Request $request)
+    public function send(Request $request): \Illuminate\Http\JsonResponse
     {
         $error = (object)['status' => 0, 'message' => null];
         $attachment = null;
@@ -95,7 +95,8 @@ class MessagesController extends Controller
         }
 
         if (!$error->status) {
-            $messageID = mt_rand(9, 999999999) + time();
+            // Gunakan uniqid agar ID pesan unik
+            $messageID = uniqid('msg_', true);
             Chatify::newMessage([
                 'id' => $messageID,
                 'type' => $request['type'],
@@ -125,7 +126,7 @@ class MessagesController extends Controller
         ]);
     }
 
-    public function fetch(Request $request)
+    public function fetch(Request $request): \Illuminate\Http\JsonResponse
     {
         $allMessages = null;
         $query = Chatify::fetchMessagesQuery($request['id'])->orderBy('created_at', 'asc');
@@ -148,13 +149,13 @@ class MessagesController extends Controller
         ]);
     }
 
-    public function seen(Request $request)
+    public function seen(Request $request): \Illuminate\Http\JsonResponse
     {
         $seen = Chatify::makeSeen($request['id']);
         return Response::json(['status' => $seen], 200);
     }
 
-    public function getContacts(Request $request)
+    public function getContacts(Request $request): \Illuminate\Http\JsonResponse
     {
         $users = Message::join('users', function ($join) {
             $join->on('ch_messages.from_id', '=', 'users.id')
@@ -178,7 +179,7 @@ class MessagesController extends Controller
         return Response::json(['contacts' => $contacts], 200);
     }
 
-    public function updateContactItem(Request $request)
+    public function updateContactItem(Request $request): \Illuminate\Http\JsonResponse
     {
         $userCollection = User::find($request['user_id']);
         $contactItem = Chatify::getContactItem($request['messenger_id'], $userCollection);
@@ -186,7 +187,7 @@ class MessagesController extends Controller
         return Response::json(['contactItem' => $contactItem], 200);
     }
 
-    public function favorite(Request $request)
+    public function favorite(Request $request): \Illuminate\Http\JsonResponse
     {
         if (Chatify::inFavorite($request['user_id'])) {
             Chatify::makeInFavorite($request['user_id'], 0);
@@ -199,7 +200,7 @@ class MessagesController extends Controller
         return Response::json(['status' => $status], 200);
     }
 
-    public function getFavorites(Request $request)
+    public function getFavorites(Request $request): \Illuminate\Http\JsonResponse
     {
         $favoritesList = null;
         $favorites = Favorite::where('user_id', Auth::user()->id);
@@ -214,7 +215,7 @@ class MessagesController extends Controller
         ], 200);
     }
 
-    public function search(Request $request)
+    public function search(Request $request): \Illuminate\Http\JsonResponse
     {
         $getRecords = null;
         $input = trim(filter_var($request['input'], FILTER_SANITIZE_STRING));
