@@ -14,7 +14,7 @@ class ChatifyServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         app()->bind('ChatifyMessenger', function () {
             return new ChatifyMessenger;
@@ -26,7 +26,7 @@ class ChatifyServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // Load Views, Migrations, Routes
         $this->loadViewsFrom(__DIR__ . '/views', 'Chatify');
@@ -47,7 +47,7 @@ class ChatifyServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function setPublishes()
+    protected function setPublishes(): void
     {
         // Load avatar folder from package config
         $config = include(__DIR__ . '/config/chatify.php');
@@ -92,7 +92,7 @@ class ChatifyServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function loadRoutes()
+    protected function loadRoutes(): void
     {
         Route::group($this->routesConfigurations(), function () {
             $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
@@ -104,7 +104,7 @@ class ChatifyServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    private function routesConfigurations()
+    private function routesConfigurations(): array
     {
         return [
             'prefix' => config('chatify.routes.prefix', 'chatify'),
