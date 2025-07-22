@@ -103,15 +103,19 @@ class ChatifyMessenger
         });
     }
 
-    public function newMessage($data)
+    public function newMessage(array $data): ?Message
     {
+        // Validasi data minimal
+        if (!isset($data['id'], $data['type'], $data['from_id'], $data['to_id'], $data['body'])) {
+            return null;
+        }
         return Message::create([
             'id' => $data['id'],
             'type' => $data['type'],
             'from_id' => $data['from_id'],
             'to_id' => $data['to_id'],
             'body' => $data['body'],
-            'attachment' => $data['attachment'],
+            'attachment' => $data['attachment'] ?? null,
         ]);
     }
 
@@ -160,11 +164,12 @@ class ChatifyMessenger
             ->exists();
     }
 
-    public function makeInFavorite($user_id, $action)
+    public function makeInFavorite(int $user_id, int $action): bool
     {
         if ($action > 0) {
+            // Gunakan uniqid untuk ID unik, bukan rand
             return Favorite::create([
-                'id' => rand(9, 99999999),
+                'id' => uniqid(),
                 'user_id' => Auth::id(),
                 'favorite_id' => $user_id,
             ]) ? true : false;
@@ -192,7 +197,7 @@ class ChatifyMessenger
         return $images;
     }
 
-    public function deleteConversation($user_id)
+    public function deleteConversation(int $user_id): bool
     {
         try {
             foreach ($this->fetchMessagesQuery($user_id)->get() as $msg) {
@@ -205,7 +210,8 @@ class ChatifyMessenger
                 $msg->delete();
             }
             return true;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
+            // Log error jika perlu
             return false;
         }
     }
