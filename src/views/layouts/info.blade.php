@@ -10,7 +10,7 @@
     <div class="messenger-infoView-btns">
         {{-- Tombol default (jika ingin diaktifkan bisa buka komentar) --}}
         {{-- <a href="#" class="default"><i class="fas fa-camera"></i> Default</a> --}}
-        <a href="javascript:void(0)" class="danger delete-conversation">
+        <a href="javascript:void(0)" class="danger delete-conversation" onclick="openModal('confirmDeleteModal')">
             <i class="fas fa-trash-alt"></i> Delete Conversation
         </a>
     </div>
@@ -30,3 +30,28 @@
         </div>
     </div>
 </div>
+
+{{-- Modal konfirmasi hapus percakapan --}}
+<x-modal id="confirmDeleteModal" style="display:none;" data-name="confirm-delete">
+    <x-slot name="header">Konfirmasi Hapus</x-slot>
+    <x-slot name="body">Apakah kamu yakin ingin menghapus percakapan ini?</x-slot>
+    <x-slot name="footer">
+        <button class="app-btn cancel" onclick="closeModal('confirmDeleteModal')">Batal</button>
+        <button class="app-btn a-btn-danger" onclick="deleteConversation()">Hapus</button>
+    </x-slot>
+</x-modal>
+
+{{-- Script open/close modal sederhana --}}
+<script>
+function openModal(id) {
+    document.getElementById(id).style.display = 'block';
+}
+function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+}
+function deleteConversation() {
+    // TODO: Implementasi aksi hapus percakapan
+    alert('Percakapan dihapus (dummy)!');
+    closeModal('confirmDeleteModal');
+}
+</script>
