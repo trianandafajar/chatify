@@ -119,3 +119,41 @@
 
 @include('Chatify::layouts.modals')
 @include('Chatify::layouts.footerLinks')
+
+{{-- Modal Sukses --}}
+<x-success-modal id="successModal">
+    <x-slot name="body">Aksi berhasil dilakukan!</x-slot>
+    <x-slot name="footer">
+        <button class="app-btn cancel" onclick="closeModal('successModal')">Tutup</button>
+    </x-slot>
+</x-success-modal>
+
+{{-- Modal Loading --}}
+<x-loading-modal id="loadingModal">
+    <x-slot name="body">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </x-slot>
+</x-loading-modal>
+
+{{-- Modal Form --}}
+<x-form-modal id="formModal">
+    <x-slot name="header">Form Input</x-slot>
+    <x-slot name="body">
+        <form id="demoForm">
+            <input type="text" name="nama" placeholder="Nama" class="app-input" />
+        </form>
+    </x-slot>
+    <x-slot name="footer">
+        <button class="app-btn cancel" onclick="closeModal('formModal')">Batal</button>
+        <button class="app-btn a-btn-success" type="submit" form="demoForm">Simpan</button>
+    </x-slot>
+</x-form-modal>
+
+{{-- Modal Notifikasi --}}
+<x-notification-modal id="notifModal">
+    <x-slot name="body">Ini adalah pesan notifikasi!</x-slot>
+    <x-slot name="footer">
+        <button class="app-btn cancel" onclick="closeModal('notifModal')">Tutup</button>
+    </x-slot>
+</x-notification-modal>
